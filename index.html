@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>萤火虫类</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				overflow: hidden;
+			}
+			.fireworm {
+				width: 20px;
+				height: 20px;
+				position: absolute;
+			}
+			.snow {
+				width: 20px;
+				height: 20px;
+				position: absolute;
+				top: -20px;
+			}
+			body {
+				background: url(img/bg.jpg);
+				background-size: cover;
+			}
+		</style>
+		<script src="getStyle.js" type="text/javascript" charset="utf-8"></script>
+		<script src="moveMultiple.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//创建萤火虫构造函数
+			onload = function() {
+				var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+				var clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
+
+				function Fireworm() {
+					
+					//属性
+					var self = this;
+					this.ele = document.createElement("img");
+					this.ele.className = "fireworm";
+					this.ele.src = "img/1.jpg";
+					document.body.appendChild(this.ele);
+					
+					//初始位置
+					this.ele.style.left = parseInt(Math.random() * clientWidth) - 29 + "px";
+					this.ele.style.top = parseInt(Math.random() * clientHeight) - 28 + "px";
+					
+										
+					
+				}
+				//原型
+				Fireworm.prototype.fly = function () {
+
+					//方法
+					var self = this;
+					self.ele = this.ele;
+
+						changePosition();
+				function changePosition() {
+
+						moveMultiple(self.ele, { //怎么用到self.ele?
+							"left": parseInt(Math.random() * clientWidth - 29),
+							"top": parseInt(Math.random() * clientHeight - 28)
+						},changePosition); //为了让用萤火虫不停地运动，需要将运动的函数写到callBack
+
+					}
+				};
+
+				//雪花构造函数
+				function Snow(){
+					this.ele = document.createElement("img");
+					document.body.appendChild(this.ele);
+					this.ele.className = "snow";
+					this.ele.src = "img/snow.gif";
+					this.ele.style.left =  parseInt(Math.random() * clientWidth) + "px";
+				}
+				
+				Snow.prototype.drog = function () {
+					var self = this;
+					self.timer = setInterval(function () {
+						var speed = 2;
+						self.ele.style.top = speed + self.ele.offsetTop + "px";
+						if(self.ele.offsetTop > clientHeight) {
+							self.ele.style.left =  parseInt(Math.random() * clientWidth) + "px";
+							self.ele.style.top = self.ele.offsetHeight + "px";
+						}
+					},30);
+					
+				};
+				
+					
+				var count = 0; //定义一个统计萤火虫个数的变量
+				var timerOffireworm = setInterval(function() {
+					//实例化
+					var fireworm = new Fireworm();
+					var snow = new Snow();
+					fireworm.fly();
+					snow.drog();
+					count++;
+					if(count >= 30) {
+						clearInterval(timerOffireworm);
+					}
+				}, 1000);
+			};
+		</script>
+	</head>
+
+	<body>
+
+	</body>
+
+</html>
